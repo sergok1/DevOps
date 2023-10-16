@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-app
 spec:
-  replicas: 4
+  replicas: 2
   selector:
     matchLabels:
       app: web-app
@@ -15,19 +15,21 @@ spec:
       containers:
         - name: web-app
           image: your-web-app-image
+          imagePullPolicy: IfNotPresent
           # Установка ограничений и запросов ресурсов для контейнера
           resources:
             limits:
               cpu: "1"
               memory: "256Mi"
             requests:
-              cpu: "0.1"
+              cpu: "100m"
               memory: "128Mi"
           # Проверка готовности и жизнеспособности приложения
           readinessProbe:
             httpGet:
               path: /health
               port: 80
+              # Проверь порт
             initialDelaySeconds: 10
             periodSeconds: 5
           livenessProbe:
